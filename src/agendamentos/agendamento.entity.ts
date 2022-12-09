@@ -1,12 +1,8 @@
 import {
     BaseEntity,
     Entity,
-    Unique,
     PrimaryGeneratedColumn,
     Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    TableForeignKey,
     OneToOne,
     JoinColumn,
   } from 'typeorm';
@@ -24,12 +20,15 @@ export class Agendamento extends BaseEntity{
     @JoinColumn()
     chamado : Chamado;*/
 
-    @Column()
+    @Column({nullable: true})
     dataEHora : Date;
 
-    @Column({nullable: true})
+    @Column()
     alertas : Date[];
 
     @Column({nullable: true})
     descricao : string;
+
+    @Column()
+    status : string;
 }
