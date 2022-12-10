@@ -16,6 +16,6 @@ export class Alerta extends BaseEntity {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Agendamento, (agendamento) => agendamento.alertas)
+  @ManyToOne(() => Agendamento, (agendamento) => agendamento.alertas,  { onDelete: 'CASCADE' })
   agendamento: Agendamento;
 }

@@ -88,7 +88,7 @@ export class AgendamentosService {
   }
 
   createAlerts(datas: Date[]): Alerta[] {
-    let alertas: Alerta[];
+    var alertas: Alerta[] = [];
 
     datas.forEach((data) => {
       let alerta = this.alertaRepo.create();

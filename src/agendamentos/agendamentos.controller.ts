@@ -7,6 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { get } from 'http';
 import { Agendamento } from './agendamento.entity';
 import { AgendamentosService } from './agendamentos.service';
 import { CreateAgendamentodto } from './dto/createAgendamentodto';
