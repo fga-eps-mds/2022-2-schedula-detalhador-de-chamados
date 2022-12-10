@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { Agendamento } from './agendamento.entity';
@@ -17,5 +18,6 @@ export class Alerta extends BaseEntity {
   date: Date;
 
   @ManyToOne(() => Agendamento, (agendamento) => agendamento.alertas,  { onDelete: 'CASCADE' })
+  @JoinColumn()
   agendamento: Agendamento;
 }

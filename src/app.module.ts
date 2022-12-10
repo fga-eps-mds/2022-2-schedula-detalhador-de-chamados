@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import configuration from './configs/configuration';
 import { ConfigModule } from '@nestjs/config';
 import { AgendamentoModule } from './agendamentos/agendamento.module';
-import { AppController } from './app.controlller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -17,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     synchronize: true,
   }) ,AgendamentoModule],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
