@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './configs/typeorm.config';
+import configuration from './configs/configuration';
+import { ConfigModule } from '@nestjs/config';
 import { AgendamentoModule } from './agendamentos/agendamento.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), AgendamentoModule],
+  imports: [ConfigModule.forRoot({ load: [configuration] }), AgendamentoModule],
   controllers: [],
   providers: [],
 })
