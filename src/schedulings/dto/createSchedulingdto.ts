@@ -3,15 +3,15 @@
 
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateAgendamentodto {
+export class CreateSchedulingDto {
   //chamado : CreateChamadodto;
 
-  dataHora: Date;
+  dateTime: Date;
 
-  alertas: Date[];
+  alerts: Date[];
 
   @IsString({ message: 'Informe uma descrição valida' })
-  descricao: string;
+  description: string;
 
   @IsNotEmpty({
     message: 'Status não fornecido',

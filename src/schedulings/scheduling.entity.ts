@@ -8,13 +8,13 @@ import {
   Relation,
 } from 'typeorm';
 
-import { Alerta } from './alerta.entity';
+import { Alert } from './alert.entity';
 
 //Import da entidade de chamado ainda não feito
 //import {Chamado} from '../chamados/chamado.entity.js';
 
 @Entity()
-export class Agendamento extends BaseEntity {
+export class Scheduling extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,16 +24,16 @@ export class Agendamento extends BaseEntity {
     chamado : Chamado;*/
 
   @Column({ nullable: true })
-  dataHora: Date;
+  dateTime: Date;
 
-  @OneToMany(() => Alerta, (alerta: Alerta) => alerta.agendamento, {
+  @OneToMany(() => Alert, (alert: Alert) => alert.scheduling, {
     cascade: true,
   })
   @JoinColumn()
-  alertas: Relation<Alerta[]>;
+  alerts: Relation<Alert[]>;
 
   @Column({ nullable: true })
-  descricao: string;
+  description: string;
 
   @Column()
   status: string;
