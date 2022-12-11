@@ -40,14 +40,16 @@ export class AgendamentosService {
   }
 
   async findAgendamentos(): Promise<Agendamento[]> {
-    const agendamentos = this.agendamentoRepo.find({relations: ["alertas"]});
+    const agendamentos = this.agendamentoRepo.find({ relations: ['alertas'] });
     if (!agendamentos)
       throw new NotFoundException('Não existem agendamentos cadastrados');
     return agendamentos;
   }
 
   async findAgendamentoById(agendamentoId: string): Promise<Agendamento> {
-    const agendamento = await this.agendamentoRepo.findOne({where:{ id: agendamentoId }, relations: ["alertas"]
+    const agendamento = await this.agendamentoRepo.findOne({
+      where: { id: agendamentoId },
+      relations: ['alertas'],
     });
     if (!agendamento) throw new NotFoundException('Agendamento não encontrado');
     return agendamento;

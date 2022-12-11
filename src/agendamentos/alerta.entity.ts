@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { Agendamento } from './agendamento.entity';
@@ -17,7 +18,11 @@ export class Alerta extends BaseEntity {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Agendamento, (agendamento) => agendamento.alertas,  { onDelete: 'CASCADE' })
+  @ManyToOne(
+    () => Agendamento,
+    (agendamento: Agendamento) => agendamento.alertas,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn()
-  agendamento: Agendamento;
+  agendamento: Relation<Agendamento>;
 }

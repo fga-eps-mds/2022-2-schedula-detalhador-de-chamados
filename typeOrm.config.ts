@@ -1,8 +1,7 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Agendamento } from './src/agendamentos/agendamento.entity';
-import { Alerta } from './src/agendamentos/alerta.entity';
 import { Teste1670639446869 } from './migrations/1670639446869-Teste';
+import { Relation1670730610205 } from './migrations/1670730610205-Relation';
 
 const configService = new ConfigService();
 
@@ -12,7 +11,7 @@ export default new DataSource({
   port: 5105,
   username: 'postgres',
   password: 'postgres',
-  database: 'postgres',
+  database: 'schedula_core',
   entities: ['./src/**/*.entity.ts'],
-  migrations: [Teste1670639446869],
+  migrations: [Teste1670639446869, Relation1670730610205],
 });

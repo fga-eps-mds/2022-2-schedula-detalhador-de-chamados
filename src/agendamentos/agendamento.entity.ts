@@ -5,6 +5,7 @@ import {
   Column,
   OneToMany,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
 import { Alerta } from './alerta.entity';
@@ -25,9 +26,11 @@ export class Agendamento extends BaseEntity {
   @Column({ nullable: true })
   dataHora: Date;
 
-  @OneToMany(() => Alerta, (alerta) => alerta.agendamento, { cascade: true })
+  @OneToMany(() => Alerta, (alerta: Alerta) => alerta.agendamento, {
+    cascade: true,
+  })
   @JoinColumn()
-  alertas: Alerta[];
+  alertas: Relation<Alerta[]>;
 
   @Column({ nullable: true })
   descricao: string;
