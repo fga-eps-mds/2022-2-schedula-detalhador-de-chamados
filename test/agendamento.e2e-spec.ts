@@ -1,39 +1,39 @@
-import { AgendamentosService } from '../src/agendamentos/agendamentos.service';
-import { CreateAgendamentodto } from '../src/agendamentos/dto/createAgendamentodto';
+import { IssuesService } from '../src/issues/issues.service';
+import { CreateIssuedto } from '../src/issues/dto/createIssuedto';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AgendamentoModule } from '../src/agendamentos/agendamento.module';
+import { IssueModule } from '../src/issues/issue.module';
 
-const teste: CreateAgendamentodto = {
+const teste: CreateIssuedto = {
   dataHora: new Date('2022-12-10T17:55:20.565Z'),
   alertas: [new Date('2022-12-10T17:55:20.565Z')],
   descricao: 'Teste',
   status: 'Aberto',
 };
 
-describe('Agendamentos Controller', () => {
+describe('Issues Controller', () => {
   let app: INestApplication;
-  let agendamentosService = { createAgendamento: () => teste };
+  let issuesService = { createIssue: () => teste };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AgendamentoModule],
+      imports: [IssueModule],
     })
-      .overrideProvider(AgendamentosService)
-      .useValue(agendamentosService)
+      .overrideProvider(IssuesService)
+      .useValue(issuesService)
       .compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
-  it(`/POST agendamento`, () => {
+  it(`/POST issue`, () => {
     return request(app.getHttpServer())
-      .post('/agendamento')
+      .post('/issue')
       .expect(200)
       .expect({
-        data: agendamentosService.createAgendamento(),
+        data: issuesService.createIssue(),
       });
   });
 
