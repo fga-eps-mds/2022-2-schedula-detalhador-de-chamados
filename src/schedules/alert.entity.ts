@@ -8,7 +8,7 @@ import {
   Relation,
 } from 'typeorm';
 
-import { Scheduling } from './scheduling.entity';
+import { Schedule } from './schedule.entity';
 
 @Entity()
 export class Alert extends BaseEntity {
@@ -18,9 +18,9 @@ export class Alert extends BaseEntity {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Scheduling, (scheduling: Scheduling) => scheduling.alerts, {
+  @ManyToOne(() => Schedule, (schedule: Schedule) => schedule.alerts, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  scheduling: Relation<Scheduling>;
+  schedule: Relation<Schedule>;
 }

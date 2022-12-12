@@ -1,11 +1,11 @@
 export default () => ({
   database: {
-    host: 'postgres',
-    user: 'postgres',
-    pass: 'postgres',
-    db: 'schedula_core',
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    pass: process.env.DATABASE_PASS,
+    db: process.env.DATABASE_DB,
     address: 'schedula_core_db',
-    port: 5105,
+    port: parseInt(process.env.DATABASE_PORT) || 5105,
   },
-  environment: 'DEVELOPMENT',
+  environment: process.env.ENVIRONMENT,
 });

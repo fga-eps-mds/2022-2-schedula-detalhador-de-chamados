@@ -1,9 +1,8 @@
-//Import dos dtos de chamados ainda não criados
-//import {CreateChamadodto} from '../chamados/chamadosdto.ts';
+//import {CreateCalldto} from '../calls/createCalldto';
 
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateSchedulingDto {
+export class CreateScheduleDto {
   //chamado : CreateChamadodto;
 
   dateTime: Date;
