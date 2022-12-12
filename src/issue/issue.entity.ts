@@ -7,7 +7,7 @@ import {
   JoinColumn,
   Relation,
 } from 'typeorm';
-
+ 
 
 @Entity()
 export class Issue extends BaseEntity {

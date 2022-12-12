@@ -10,7 +10,7 @@ import {
 import { Issue } from './issue.entity';
 import { IssuesService } from './issue.service';
 import { CreateIssuedto } from './dto/createIssuedto';
-
+ 
   @Controller('issues')
   export class IssuesController {
     constructor(private issuesService: IssuesService) {}

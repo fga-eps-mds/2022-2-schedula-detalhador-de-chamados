@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Issue } from './issue.entity';
 import { CreateIssuedto } from './dto/createIssuedto';
-
+ 
 @Injectable()
 export class IssuesService {
   constructor(
