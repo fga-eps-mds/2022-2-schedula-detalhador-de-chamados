@@ -1,7 +1,7 @@
 //Import dos dtos de chamados ainda não criados
 //import {CreateChamadodto} from '../chamados/chamadosdto.ts';
 
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateIssuedto {
   //chamado : CreateChamadodto;
@@ -37,5 +37,4 @@ export class CreateIssuedto {
     message: 'email não fornecido',
   })
   email: string;
-
 }

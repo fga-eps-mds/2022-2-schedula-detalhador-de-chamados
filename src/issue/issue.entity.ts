@@ -1,17 +1,7 @@
-import {
-  BaseEntity,
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  Relation,
-} from 'typeorm';
-
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Issue extends BaseEntity {
-   
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
@@ -31,5 +21,4 @@ export class Issue extends BaseEntity {
 
   @Column()
   date: Date;
-  
 }

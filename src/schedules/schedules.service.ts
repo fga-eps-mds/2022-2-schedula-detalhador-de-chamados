@@ -1,4 +1,3 @@
-//o commit aterior não foi os dois co-authors
 import {
   Injectable,
   InternalServerErrorException,
@@ -22,11 +21,9 @@ export class SchedulesService {
   async createSchedule(
     createScheduledto: CreateScheduleDto,
   ): Promise<Schedule> {
-    const { /*chamado, */ dateTime, alerts, description, status } =
-      createScheduledto;
+    const { dateTime, alerts, description, status } = createScheduledto;
 
     const schedule = this.scheduleRepo.create();
-    //schedule.chamado = chamado;
     schedule.alerts = this.createAlerts(alerts);
     schedule.description = description;
     schedule.dateTime = dateTime;
@@ -64,10 +61,8 @@ export class SchedulesService {
     const schedule = await this.scheduleRepo.findOneBy({
       id: scheduleId,
     });
-    const { /*chamado, */ dateTime, alerts, description, status } =
-      createScheduledto;
+    const { dateTime, alerts, description, status } = createScheduledto;
 
-    //schedule.chamado = chamado
     schedule.alerts = this.createAlerts(alerts);
     schedule.description = description;
     schedule.dateTime = dateTime;

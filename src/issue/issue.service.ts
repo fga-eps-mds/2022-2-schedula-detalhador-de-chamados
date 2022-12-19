@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Issue } from './issue.entity';
 import { CreateIssuedto } from './dto/createIssuedto';
 
@@ -15,16 +15,22 @@ export class IssuesService {
     private IssueRepo: Repository<Issue>,
   ) {}
 
-  async createIssue(
-    createIssuedto: CreateIssuedto,
-  ): Promise<Issue> {
-    const {requester,phone,city,workstation,problem_category,problem_type,email} = createIssuedto;
+  async createIssue(createIssuedto: CreateIssuedto): Promise<Issue> {
+    const {
+      requester,
+      phone,
+      city,
+      workstation,
+      problem_category,
+      problem_type,
+      email,
+    } = createIssuedto;
     const issue = this.IssueRepo.create();
     issue.requester = requester;
     issue.phone = phone;
     issue.city = city;
-    issue.workstation  = workstation;
-    issue.problem_category  = problem_category;
+    issue.workstation = workstation;
+    issue.problem_category = problem_category;
     issue.problem_type = problem_type;
     issue.email = email;
     issue.date = new Date();
@@ -39,8 +45,7 @@ export class IssuesService {
 
   async findIssues(): Promise<Issue[]> {
     const issues = this.IssueRepo.find({});
-    if (!issues)
-      throw new NotFoundException('Não existem chamado cadastrados');
+    if (!issues) throw new NotFoundException('Não existem chamado cadastrados');
     return issues;
   }
 
@@ -59,16 +64,24 @@ export class IssuesService {
     const issue = await this.IssueRepo.findOneBy({
       id: issueId,
     });
-    const {requester,phone,city,workstation,problem_category,problem_type,email} = createIssuedto;
+    const {
+      requester,
+      phone,
+      city,
+      workstation,
+      problem_category,
+      problem_type,
+      email,
+    } = createIssuedto;
 
     issue.requester = requester;
     issue.phone = phone;
     issue.city = city;
-    issue.workstation  = workstation;
-    issue.problem_category  = problem_category;
+    issue.workstation = workstation;
+    issue.problem_category = problem_category;
     issue.problem_type = problem_type;
     issue.email = email;
-    
+
     try {
       await this.IssueRepo.save(issue);
       return issue;
@@ -80,10 +93,7 @@ export class IssuesService {
   async deleteIssue(issueId: string) {
     const result = await this.IssueRepo.delete({ id: issueId });
     if (result.affected === 0) {
-      throw new NotFoundException(
-        'Nao foi encontrado um chamado com este id',
-      );
+      throw new NotFoundException('Nao foi encontrado um chamado com este id');
     }
   }
-
 }
