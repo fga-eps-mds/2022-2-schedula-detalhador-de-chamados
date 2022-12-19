@@ -1,24 +1,29 @@
 import { IssueModule } from './issue/issue.module';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
 import { Module } from '@nestjs/common';
 import configuration from './configs/configuration';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from './schedules/schedules.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+const configService = configuration();
+
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'schedula_core_db',
+      host: configService.database.host,
       port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'schedula_core',
+      username: configService.database.user,
+      password: configService.database.pass,
+      database: configService.database.db,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: true,
     }),
-    CallModule,
+    ScheduleModule,
+    IssueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
