@@ -1,11 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SchedulesController } from './schedules.controller';
 import { SchedulesService } from './schedules.service';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateScheduleDto } from './dto/createScheduledto';
 
 describe('SchedulesController', () => {
   let controller: SchedulesController;
 
-  const mockSchedulesService = {};
+  const mockUuid = uuidv4();
+
+  const mockCreateScheduleDto: CreateScheduleDto = {
+    dateTime: new Date('2022-12-17T17:55:20.565'),
+    alerts: [
+      new Date('2022-12-17T17:55:20.565'),
+      new Date('2022-12-18T18:55:20.565'),
+    ],
+    description: 'Uma descrição valida',
+    status: 'Em andamento',
+  };
+
+  const mockSchedulesService = {
+    createSchedule: jest.fn((dto) => {
+      return {
+        ...dto,
+      };
+    }),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,5 +41,11 @@ describe('SchedulesController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should create a schedule', async () => {
+    const dto = mockCreateScheduleDto;
+    const response = await controller.createSchedule(dto);
+    expect(response).toMatchObject({ ...dto });
   });
 });
