@@ -83,8 +83,7 @@ export class SchedulesService {
 
   async deleteSchedule(scheduleId: string) {
     const result = await this.scheduleRepo.delete({ id: scheduleId });
-    if (!result) throw new NotFoundException('Usuário não encontrado');
-    if (result.affected === 0) {
+    if (!result || result.affected === 0) {
       throw new NotFoundException(
         'Nao foi encontrado um agendamento com este id',
       );
