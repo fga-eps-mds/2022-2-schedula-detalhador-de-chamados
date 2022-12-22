@@ -19,6 +19,16 @@ describe('SchedulesController', () => {
     status: 'Em andamento',
   };
 
+  const mockUpdateScheduleDto: CreateScheduleDto = {
+    dateTime: new Date('2022-12-17T17:55:20.565'),
+    alerts: [
+      new Date('2022-12-17T17:55:20.565'),
+      new Date('2022-12-18T18:55:20.565'),
+    ],
+    description: 'Outra descrição valida',
+    status: 'Concluido',
+  };
+
   const mockSchedulesService = {
     createSchedule: jest.fn((dto) => {
       return {
@@ -27,6 +37,12 @@ describe('SchedulesController', () => {
     }),
     findSchedules: jest.fn(() => {
       return [{ ...mockCreateScheduleDto }];
+    }),
+    findScheduleById: jest.fn((id) => {
+      return {
+        id,
+        ...mockCreateScheduleDto,
+      };
     }),
   };
 
@@ -56,5 +72,11 @@ describe('SchedulesController', () => {
     const response = await controller.getSchedules();
     expect(response.length).toBeGreaterThan(0);
     expect(response).toEqual([{ ...mockCreateScheduleDto }]);
+  });
+
+  it('should return a schedule with the respective id', async () => {
+    const scheduleId = mockUuid;
+    const response = await controller.getSchedule(scheduleId);
+    expect(response).toMatchObject({ id: scheduleId });
   });
 });
