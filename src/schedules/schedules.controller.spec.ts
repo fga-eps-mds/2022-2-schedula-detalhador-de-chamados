@@ -44,6 +44,17 @@ describe('SchedulesController', () => {
         ...mockCreateScheduleDto,
       };
     }),
+    updateSchedule: jest.fn((dto, id) => {
+      return {
+        ...dto,
+        id,
+      };
+    }),
+    deleteSchedule: jest.fn((id) => {
+      return {
+        message: 'Agendamento removido com sucesso',
+      };
+    }),
   };
 
   beforeEach(async () => {
@@ -78,5 +89,19 @@ describe('SchedulesController', () => {
     const scheduleId = mockUuid;
     const response = await controller.getSchedule(scheduleId);
     expect(response).toMatchObject({ id: scheduleId });
+  });
+
+  it('should update a schedule', async () => {
+    const scheduleId = mockUuid;
+    const dto = mockUpdateScheduleDto;
+    const response = await controller.updateSchedule(scheduleId, dto);
+    expect(response).toMatchObject({ id: scheduleId, ...dto });
+  });
+
+  it('should delete a schedule', async () => {
+    const scheduleId = mockUuid;
+    const successMessage = 'Agendamento removido com sucesso';
+    const response = await controller.deleteSchedule(scheduleId);
+    expect(response).toMatchObject({ message: successMessage });
   });
 });
