@@ -25,6 +25,9 @@ describe('SchedulesController', () => {
         ...dto,
       };
     }),
+    findSchedules: jest.fn(() => {
+      return [{ ...mockCreateScheduleDto }];
+    }),
   };
 
   beforeEach(async () => {
@@ -47,5 +50,11 @@ describe('SchedulesController', () => {
     const dto = mockCreateScheduleDto;
     const response = await controller.createSchedule(dto);
     expect(response).toMatchObject({ ...dto });
+  });
+
+  it('should return all schedules', async () => {
+    const response = await controller.getSchedules();
+    expect(response.length).toBeGreaterThan(0);
+    expect(response).toEqual([{ ...mockCreateScheduleDto }]);
   });
 });
