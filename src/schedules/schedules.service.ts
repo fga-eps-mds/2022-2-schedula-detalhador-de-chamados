@@ -48,7 +48,6 @@ export class SchedulesService {
   }
 
   async findScheduleById(scheduleId: string): Promise<Schedule> {
-    console.log(scheduleId);
     const schedule = await this.scheduleRepo.findOne({
       where: { id: scheduleId },
       relations: ['alerts'],
