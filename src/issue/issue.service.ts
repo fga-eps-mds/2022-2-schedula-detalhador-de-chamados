@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Issue } from './issue.entity';
 import { CreateIssuedto } from './dto/createIssuedto';
+import { UpdateIssuedto } from './dto/updateIssuedto';
 
 @Injectable()
 export class IssuesService {
@@ -16,28 +17,10 @@ export class IssuesService {
   ) {}
 
   async createIssue(createIssuedto: CreateIssuedto): Promise<Issue> {
-    const {
-      requester,
-      phone,
-      city,
-      workstation,
-      problem_category,
-      problem_type,
-      email,
-    } = createIssuedto;
-    const issue = this.IssueRepo.create();
-    issue.requester = requester;
-    issue.phone = phone;
-    issue.city = city;
-    issue.workstation = workstation;
-    issue.problem_category = problem_category;
-    issue.problem_type = problem_type;
-    issue.email = email;
-    issue.date = new Date();
-
+    const date = new Date();
+    const issue = this.IssueRepo.create({ ...createIssuedto, date });
     try {
-      await issue.save();
-      return issue;
+      return await this.IssueRepo.save(issue);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -58,7 +41,7 @@ export class IssuesService {
   }
 
   async updateIssue(
-    createIssuedto: CreateIssuedto,
+    updateIssuedto: UpdateIssuedto,
     issueId: string,
   ): Promise<Issue> {
     const issue = await this.IssueRepo.findOneBy({
@@ -72,7 +55,7 @@ export class IssuesService {
       problem_category,
       problem_type,
       email,
-    } = createIssuedto;
+    } = updateIssuedto;
 
     issue.requester = requester;
     issue.phone = phone;
