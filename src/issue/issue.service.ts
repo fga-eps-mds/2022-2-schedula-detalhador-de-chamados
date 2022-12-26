@@ -44,7 +44,7 @@ export class IssuesService {
   }
 
   async findIssues(): Promise<Issue[]> {
-    const issues = this.IssueRepo.find({});
+    const issues = await this.IssueRepo.find({});
     if (!issues) throw new NotFoundException('Não existem chamado cadastrados');
     return issues;
   }
