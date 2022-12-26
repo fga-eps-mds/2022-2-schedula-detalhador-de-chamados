@@ -32,7 +32,7 @@ export class CreateIssuedto {
   @IsNotEmpty({
     message: 'Data não fornecido',
   })
-  date: string;
+  date: Date;
   @IsNotEmpty({
     message: 'email não fornecido',
   })

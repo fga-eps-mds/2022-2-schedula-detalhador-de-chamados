@@ -44,7 +44,7 @@ export class IssuesController {
 
   @Delete(':id')
   async deleteIssue(@Param('id') id: string) {
-    const issue = await this.issuesService.deleteIssue(id);
+    await this.issuesService.deleteIssue(id);
     return {
       message: 'Chamado removido com sucesso',
     };
