@@ -41,7 +41,7 @@ export class SchedulesService {
   }
 
   async findSchedules(): Promise<Schedule[]> {
-    const schedules = this.scheduleRepo.find({ relations: ['alerts'] });
+    const schedules = await this.scheduleRepo.find({ relations: ['alerts'] });
     if (!schedules)
       throw new NotFoundException('Não existem agendamentos cadastrados');
     return schedules;
@@ -82,7 +82,7 @@ export class SchedulesService {
 
   async deleteSchedule(scheduleId: string) {
     const result = await this.scheduleRepo.delete({ id: scheduleId });
-    if (result.affected === 0) {
+    if (!result || result.affected === 0) {
       throw new NotFoundException(
         'Nao foi encontrado um agendamento com este id',
       );
