@@ -1,3 +1,4 @@
+import { IssueModule } from './issue/issue.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { Module } from '@nestjs/common';
@@ -22,6 +23,7 @@ const configService = configuration();
       synchronize: true,
     }),
     ScheduleModule,
+    IssueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

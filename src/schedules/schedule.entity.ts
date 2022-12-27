@@ -10,17 +10,10 @@ import {
 
 import { Alert } from './alert.entity';
 
-//import {Chamado} from '../chamados/chamado.entity.js';
-
 @Entity()
 export class Schedule extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  //Criação de relação um para um com um chamado
-  //@OneToOne(() => Chamado)
-  //@JoinColumn()
-  //chamado : Chamado;
 
   @Column({ nullable: true })
   dateTime: Date;
