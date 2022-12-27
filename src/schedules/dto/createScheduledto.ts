@@ -1,10 +1,6 @@
-//import {CreateCalldto} from '../calls/createCalldto';
-
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateScheduleDto {
-  //chamado : CreateChamadodto;
-
   dateTime: Date;
 
   alerts: Date[];

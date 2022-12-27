@@ -42,7 +42,9 @@ describe('SchedulesService', () => {
     }).compile();
 
     schedulesService = module.get<SchedulesService>(SchedulesService);
-    schedulesRepository = module.get<Repository<Schedule>>(getRepositoryToken(Schedule));
+    schedulesRepository = module.get<Repository<Schedule>>(
+      getRepositoryToken(Schedule),
+    );
   });
 
   it('should be defined', () => {
@@ -61,7 +63,9 @@ describe('SchedulesService', () => {
     it('should throw a not found exception', () => {
       jest.spyOn(schedulesRepository, 'find').mockResolvedValueOnce(null);
 
-      expect(schedulesService.findSchedules()).rejects.toThrowError(NotFoundException);
+      expect(schedulesService.findSchedules()).rejects.toThrowError(
+        NotFoundException,
+      );
     });
   });
 
