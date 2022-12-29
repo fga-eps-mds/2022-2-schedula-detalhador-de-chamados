@@ -1,12 +1,15 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { v4 as uuid } from 'uuid';
 import { SchedulesService } from './schedules.service';
 import { Schedule } from './schedule.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
+import { UpdateScheduleDto } from './dto/updateScheduledto';
+import { IssuesService } from '../issue/issue.service';
+import { Issue } from '../issue/issue.entity';
+import { Alert } from './alert.entity';
 
 describe('SchedulesService', () => {
   let schedulesService: SchedulesService;
@@ -15,20 +18,35 @@ describe('SchedulesService', () => {
   const mockUuid = uuid();
 
   const mockCreateScheduleDto: CreateScheduleDto = {
-    dateTime: new Date('2022-12-17T17:55:20.565'),
+    requester: 'mockerson',
+    phone: '62911111111',
+    city: 'Trindade',
+    workstation: 'GO',
+    problem_category: 'category',
+    problem_type: 'type',
+    attendant_email: 'attendant@mail.com',
     alerts: [
       new Date('2022-12-17T17:55:20.565'),
       new Date('2022-12-18T18:55:20.565'),
     ],
     description: 'Uma descrição valida',
-    status: 'Em andamento',
+    status: 'PROGRESS',
   };
-  const schedulesEntityList = [{ ...mockCreateScheduleDto }];
+  const mockUpdateScheduleDto: UpdateScheduleDto = {
+    description: 'Outra descrição valida',
+    status: 'CLOSED',
+    alerts: [new Date('2022-12-19T19:55:20.565')],
+    dateTime: '2022-12-18T18:55:20.565',
+  };
+  const schedulesEntityList = [
+    { ...mockCreateScheduleDto, ...mockUpdateScheduleDto },
+  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SchedulesService,
+        IssuesService,
         {
           provide: getRepositoryToken(Schedule),
           useValue: {

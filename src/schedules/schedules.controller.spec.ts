@@ -3,6 +3,8 @@ import { SchedulesController } from './schedules.controller';
 import { SchedulesService } from './schedules.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateScheduleDto } from './dto/createScheduledto';
+import { UpdateScheduleDto } from './dto/updateScheduledto';
+import { CacheModule, CACHE_MANAGER } from '@nestjs/common';
 
 describe('SchedulesController', () => {
   let controller: SchedulesController;
@@ -10,23 +12,26 @@ describe('SchedulesController', () => {
   const mockUuid = uuidv4();
 
   const mockCreateScheduleDto: CreateScheduleDto = {
-    dateTime: new Date('2022-12-17T17:55:20.565'),
+    requester: 'mockerson',
+    phone: '62911111111',
+    city: 'Trindade',
+    workstation: 'GO',
+    problem_category: 'category',
+    problem_type: 'type',
+    attendant_email: 'attendant@mail.com',
     alerts: [
       new Date('2022-12-17T17:55:20.565'),
       new Date('2022-12-18T18:55:20.565'),
     ],
     description: 'Uma descrição valida',
-    status: 'Em andamento',
+    status: 'PROGRESS',
   };
 
-  const mockUpdateScheduleDto: CreateScheduleDto = {
-    dateTime: new Date('2022-12-17T17:55:20.565'),
-    alerts: [
-      new Date('2022-12-17T17:55:20.565'),
-      new Date('2022-12-18T18:55:20.565'),
-    ],
+  const mockUpdateScheduleDto: UpdateScheduleDto = {
     description: 'Outra descrição valida',
-    status: 'Concluido',
+    status: 'CLOSED',
+    alerts: [new Date('2022-12-19T19:55:20.565')],
+    dateTime: '2022-13-18T18:55:20.565',
   };
 
   const mockSchedulesService = {
@@ -61,6 +66,7 @@ describe('SchedulesController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SchedulesController],
       providers: [SchedulesService],
+      imports: [CacheModule.register()],
     })
       .overrideProvider(SchedulesService)
       .useValue(mockSchedulesService)
