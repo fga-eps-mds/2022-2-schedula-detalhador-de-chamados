@@ -1,3 +1,4 @@
+import { Issue } from '../issue/issue.entity';
 import {
   BaseEntity,
   Entity,
@@ -6,9 +7,11 @@ import {
   OneToMany,
   JoinColumn,
   Relation,
+  OneToOne,
 } from 'typeorm';
 
 import { Alert } from './alert.entity';
+import { ScheduleStatus } from './schedule-status.enum';
 
 @Entity()
 export class Schedule extends BaseEntity {
@@ -17,6 +20,10 @@ export class Schedule extends BaseEntity {
 
   @Column({ nullable: true })
   dateTime: Date;
+
+  @OneToOne(() => Issue)
+  @JoinColumn()
+  issue: Issue;
 
   @OneToMany(() => Alert, (alert: Alert) => alert.schedule, {
     cascade: true,
@@ -28,5 +35,5 @@ export class Schedule extends BaseEntity {
   description: string;
 
   @Column()
-  status: string;
+  status: ScheduleStatus;
 }
