@@ -18,19 +18,10 @@ export class SchedulesService {
     private alertRepo: Repository<Alert>,
   ) {}
 
-  async createSchedule(
-    createScheduledto: CreateScheduleDto,
-  ): Promise<Schedule> {
-    const { dateTime, alerts, description, status } = createScheduledto;
-
-    const schedule = this.scheduleRepo.create();
-    schedule.alerts = this.createAlerts(alerts);
-    schedule.description = description;
-    schedule.dateTime = dateTime;
-    schedule.status = status;
-
+  async createSchedule(createScheduledto: CreateScheduleDto): Promise<Schedule> {
+    const schedule = this.scheduleRepo.create({ ...createScheduledto, alerts:this.createAlerts(createScheduledto.alerts) });
     try {
-      await schedule.save();
+      await this.scheduleRepo.save(schedule);
       return schedule;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
