@@ -1,17 +1,22 @@
 import {
   Body,
+  CacheInterceptor,
+  ConsoleLogger,
   Controller,
   Delete,
   Get,
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Schedule } from './schedule.entity';
 import { SchedulesService } from './schedules.service';
 import { CreateScheduleDto } from './dto/createScheduledto';
+import { UpdateScheduleDto } from './dto/updateScheduledto';
 
 @Controller('schedules')
+@UseInterceptors(CacheInterceptor)
 export class SchedulesController {
   constructor(private schedulesService: SchedulesService) {}
 
@@ -40,7 +45,7 @@ export class SchedulesController {
   @Put(':id')
   async updateSchedule(
     @Param('id') id: string,
-    @Body() updateScheduledto: CreateScheduleDto,
+    @Body() updateScheduledto: UpdateScheduleDto,
   ): Promise<Schedule> {
     const schedule = await this.schedulesService.updateSchedule(
       updateScheduledto,
