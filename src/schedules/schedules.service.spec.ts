@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -23,6 +23,17 @@ describe('SchedulesService', () => {
     description: 'Uma descrição valida',
     status: 'Em andamento',
   };
+
+  const mockUpdateScheduleDto: CreateScheduleDto = {
+    dateTime: new Date('2022-12-17T17:55:20.565'),
+    alerts: [
+      new Date('2022-12-17T17:55:20.565'),
+      new Date('2022-12-18T18:55:20.565'),
+    ],
+    description: 'Outra descrição valida',
+    status: 'Concluído',
+  };
+
   const schedulesEntityList = [{ ...mockCreateScheduleDto }];
 
   beforeEach(async () => {
@@ -32,10 +43,16 @@ describe('SchedulesService', () => {
         {
           provide: getRepositoryToken(Schedule),
           useValue: {
-            create: jest.fn().mockResolvedValue(new Schedule()),
+            create: jest.fn((dto : CreateScheduleDto) => {
+              return {
+                id: uuid(),
+                ...dto}
+            }),
             find: jest.fn().mockResolvedValue(schedulesEntityList),
             findOne: jest.fn().mockResolvedValue(schedulesEntityList[0]),
+            findOneBy: jest.fn().mockResolvedValue(mockUpdateScheduleDto),
             delete: jest.fn(),
+            save: jest.fn(),
           },
         },
       ],
@@ -51,6 +68,40 @@ describe('SchedulesService', () => {
     expect(schedulesService).toBeDefined();
     expect(schedulesRepository).toBeDefined();
   });
+
+  describe('createSchedule', () => {
+    const dto = mockCreateScheduleDto;
+
+    it('should create a schedule with success', async () => {
+      const response = await schedulesService.createSchedule(dto);
+      expect(response).toHaveProperty("id");
+    });
+
+    it('should throw an internal server error when schedule cannot be saved', async () => {
+        jest.spyOn(schedulesRepository, 'save').mockRejectedValueOnce(new Error());
+
+       expect(schedulesService.createSchedule({ ...dto })).rejects.toThrowError(
+        InternalServerErrorException,
+      );
+    });
+  });
+
+  describe('updateSchedule', () => {
+    const dto = mockUpdateScheduleDto;
+    const id = uuid();
+    it('should update a schedule with success', async () => {
+      const response = await schedulesService.updateSchedule(dto, id);
+      expect(response).toMatchObject({...mockUpdateScheduleDto});
+    });
+
+    it('should throw an internal server error when schedule cannot be updated', () => {
+      jest.spyOn(schedulesRepository, 'save').mockRejectedValueOnce(new Error());
+
+      expect(schedulesService.updateSchedule(dto, id)).rejects.toThrowError(
+        InternalServerErrorException,
+      );
+    });
+  })
 
   describe('findSchedules', () => {
     it('should return a schedule entity list successfully', async () => {
