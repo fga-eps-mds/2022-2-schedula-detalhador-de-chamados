@@ -35,5 +35,5 @@ export class Schedule extends BaseEntity {
   description: string;
 
   @Column()
-  status: ScheduleStatus;
+  status: string;
 }
