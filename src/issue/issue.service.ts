@@ -17,8 +17,7 @@ export class IssuesService {
   ) {}
 
   async createIssue(createIssuedto: CreateIssuedto): Promise<Issue> {
-    const date = new Date();
-    const issue = this.IssueRepo.create({ ...createIssuedto, date });
+    const issue = this.IssueRepo.create({ ...createIssuedto });
     try {
       return await this.IssueRepo.save(issue);
     } catch (error) {
