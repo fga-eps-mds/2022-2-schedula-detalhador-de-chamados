@@ -1,15 +1,14 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { SchedulesService } from './schedules.service';
 import { Schedule } from './schedule.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
 import { IssuesService } from '../issue/issue.service';
-import { Issue } from '../issue/issue.entity';
-import { Alert } from './alert.entity';
+import { CreateIssuedto } from 'src/issue/dto/createIssuedto';
 
 describe('SchedulesService', () => {
   let schedulesService: SchedulesService;
@@ -42,6 +41,45 @@ describe('SchedulesService', () => {
     { ...mockCreateScheduleDto, ...mockUpdateScheduleDto },
   ];
 
+  const mockCreateIssuedto: CreateIssuedto = {
+    requester: 'Mockerson',
+    phone: '61988554474',
+    city: 'Brasilia',
+    workstation: 'DF',
+    problem_category: 'Category Mock',
+    problem_type: 'Type Mock',
+    date: new Date(),
+    email: 'mockerson@mock.com',
+  };
+
+  const mockIssuesService = {
+    createIssue: jest.fn((dto) => {
+      return {
+        ...dto,
+      };
+    }),
+    findIssues: jest.fn(() => {
+      return [{ ...mockCreateIssuedto }];
+    }),
+    findIssueById: jest.fn((id) => {
+      return {
+        id,
+        ...mockCreateIssuedto,
+      };
+    }),
+    updateIssue: jest.fn((dto, id) => {
+      return {
+        ...dto,
+        id,
+      };
+    }),
+    deleteIssue: jest.fn((id) => {
+      return {
+        message: 'Chamado removido com sucesso',
+      };
+    }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -53,11 +91,16 @@ describe('SchedulesService', () => {
             create: jest.fn().mockResolvedValue(new Schedule()),
             find: jest.fn().mockResolvedValue(schedulesEntityList),
             findOne: jest.fn().mockResolvedValue(schedulesEntityList[0]),
-            delete: jest.fn(),
+            delete: jest.fn((id) => {
+              return { affected: 1 };
+            }),
           },
         },
       ],
-    }).compile();
+    })
+      .overrideProvider(IssuesService)
+      .useValue(mockIssuesService)
+      .compile();
 
     schedulesService = module.get<SchedulesService>(SchedulesService);
     schedulesRepository = module.get<Repository<Schedule>>(
@@ -78,7 +121,7 @@ describe('SchedulesService', () => {
       expect(schedulesRepository.find).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw a not found exception', () => {
+    it('should throw a not found exception', async () => {
       jest.spyOn(schedulesRepository, 'find').mockResolvedValueOnce(null);
 
       expect(schedulesService.findSchedules()).rejects.toThrowError(
@@ -109,7 +152,9 @@ describe('SchedulesService', () => {
     it('should return a not found exception', () => {
       const id = mockUuid;
 
-      jest.spyOn(schedulesRepository, 'delete').mockResolvedValue(null);
+      jest
+        .spyOn(schedulesRepository, 'delete')
+        .mockResolvedValue({ affected: 0 } as DeleteResult);
       expect(schedulesService.deleteSchedule(id)).rejects.toThrowError(
         NotFoundException,
       );
