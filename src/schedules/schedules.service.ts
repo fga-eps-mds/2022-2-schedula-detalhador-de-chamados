@@ -57,7 +57,7 @@ export class SchedulesService {
       schedule.dateTime = issue.date;
       schedule.status = ScheduleStatus[status];
 
-      await schedule.save();
+      await this.scheduleRepo.save(schedule);
       return schedule;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
@@ -65,7 +65,7 @@ export class SchedulesService {
   }
 
   async findSchedules(): Promise<Schedule[]> {
-    const schedules = this.scheduleRepo.find({
+    const schedules = await this.scheduleRepo.find({
       relations: ['alerts', 'issue'],
     });
     if (!schedules)
