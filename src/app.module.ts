@@ -15,12 +15,20 @@ const configService = configuration();
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: configService.database.host,
-      port: 5432,
+      port: configService.database.port,
       username: configService.database.user,
       password: configService.database.pass,
       database: configService.database.db,
       autoLoadEntities: true,
-      synchronize: false,
+      entities: [__dirname + '/../**/*.entity.{js,ts}'],
+      synchronize: true,
+      ...(process.env.ENVIRONMENT === 'PRODUCTION' && {
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
+      }),
     }),
     CacheModule.register({ isGlobal: true }),
     ScheduleModule,

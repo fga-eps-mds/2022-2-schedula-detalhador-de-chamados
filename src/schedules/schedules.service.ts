@@ -25,38 +25,11 @@ export class SchedulesService {
   async createSchedule(
     createScheduledto: CreateScheduleDto,
   ): Promise<Schedule> {
-    const {
-      requester,
-      city,
-      phone,
-      workstation,
-      problem_category,
-      problem_type,
-      description,
-      attendant_email,
-      alerts,
-      status,
-    } = createScheduledto;
-
+    const schedule = this.scheduleRepo.create({
+      ...createScheduledto,
+      alerts: this.createAlerts(createScheduledto.alerts),
+    });
     try {
-      const issue = await this.issuesService.createIssue({
-        requester,
-        city,
-        phone,
-        workstation,
-        problem_category,
-        problem_type,
-        date: new Date(),
-        email: attendant_email,
-      });
-      const schedule = this.scheduleRepo.create();
-
-      schedule.issue = issue;
-      schedule.alerts = this.createAlerts(alerts);
-      schedule.description = description;
-      schedule.dateTime = issue.date;
-      schedule.status = ScheduleStatus[status];
-
       await this.scheduleRepo.save(schedule);
       return schedule;
     } catch (error) {
