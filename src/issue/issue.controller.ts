@@ -1,17 +1,20 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Issue } from './issue.entity';
 import { IssuesService } from './issue.service';
 import { CreateIssuedto } from './dto/createIssuedto';
 
 @Controller('issues')
+@UseInterceptors(CacheInterceptor)
 export class IssuesController {
   constructor(private issuesService: IssuesService) {}
 

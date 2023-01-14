@@ -8,6 +8,9 @@ import { Repository } from 'typeorm';
 import { Schedule } from './schedule.entity';
 import { Alert } from './alert.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
+import { ScheduleStatus } from './schedule-status.enum';
+import { IssuesService } from '../issue/issue.service';
+import { UpdateScheduleDto } from './dto/updateScheduledto';
 
 @Injectable()
 export class SchedulesService {
@@ -16,10 +19,16 @@ export class SchedulesService {
     private scheduleRepo: Repository<Schedule>,
     @InjectRepository(Schedule)
     private alertRepo: Repository<Alert>,
+    private issuesService: IssuesService,
   ) {}
 
-  async createSchedule(createScheduledto: CreateScheduleDto): Promise<Schedule> {
-    const schedule = this.scheduleRepo.create({ ...createScheduledto, alerts:this.createAlerts(createScheduledto.alerts) });
+  async createSchedule(
+    createScheduledto: CreateScheduleDto,
+  ): Promise<Schedule> {
+    const schedule = this.scheduleRepo.create({
+      ...createScheduledto,
+      alerts: this.createAlerts(createScheduledto.alerts),
+    });
     try {
       await this.scheduleRepo.save(schedule);
       return schedule;
@@ -29,7 +38,9 @@ export class SchedulesService {
   }
 
   async findSchedules(): Promise<Schedule[]> {
-    const schedules = await this.scheduleRepo.find({ relations: ['alerts'] });
+    const schedules = await this.scheduleRepo.find({
+      relations: ['alerts', 'issue'],
+    });
     if (!schedules)
       throw new NotFoundException('Não existem agendamentos cadastrados');
     return schedules;
@@ -45,20 +56,20 @@ export class SchedulesService {
   }
 
   async updateSchedule(
-    createScheduledto: CreateScheduleDto,
+    updateScheduledto: UpdateScheduleDto,
     scheduleId: string,
   ): Promise<Schedule> {
     const schedule = await this.scheduleRepo.findOneBy({
       id: scheduleId,
     });
-    const { dateTime, alerts, description, status } = createScheduledto;
-
-    schedule.alerts = this.createAlerts(alerts);
-    schedule.description = description;
-    schedule.dateTime = dateTime;
-    schedule.status = status;
+    const { description, alerts, status, dateTime } = updateScheduledto;
 
     try {
+      schedule.alerts = alerts ? this.createAlerts(alerts) : schedule.alerts;
+      schedule.description = description;
+      schedule.dateTime = dateTime ? new Date(dateTime) : schedule.dateTime;
+      schedule.status = ScheduleStatus[status];
+
       await this.scheduleRepo.save(schedule);
       return schedule;
     } catch (error) {
@@ -68,7 +79,7 @@ export class SchedulesService {
 
   async deleteSchedule(scheduleId: string) {
     const result = await this.scheduleRepo.delete({ id: scheduleId });
-    if (!result || result.affected === 0) {
+    if (result.affected === 0) {
       throw new NotFoundException(
         'Nao foi encontrado um agendamento com este id',
       );

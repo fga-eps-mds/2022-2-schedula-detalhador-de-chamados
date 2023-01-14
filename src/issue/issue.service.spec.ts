@@ -15,7 +15,6 @@ describe('IssuesService', () => {
   let issuesService: IssuesService;
   let issuesRepository: Repository<Issue>;
   const date = new Date('2022-12-17T17:55:20.565');
-  jest.useFakeTimers().setSystemTime(date);
 
   const mockIssue = {
     requester: 'mockerson',
@@ -37,7 +36,7 @@ describe('IssuesService', () => {
     workstation: 'DF',
     problem_category: 'Category Mock',
     problem_type: 'Type Mock',
-    date: new Date(),
+    date: date,
     email: 'mockerson@mock.com',
   };
 
@@ -48,7 +47,7 @@ describe('IssuesService', () => {
     workstation: 'DF',
     problem_category: 'New Category Mock',
     problem_type: 'Type Mock',
-    date: new Date(),
+    date: date,
     email: 'mockerson@mock.com',
   };
 
@@ -86,6 +85,7 @@ describe('IssuesService', () => {
     const dto = mockCreateIssuedto;
     it('should call issue repository with correct params', async () => {
       await issuesService.createIssue(mockIssue);
+
       expect(issuesRepository.create).toHaveBeenCalledWith({
         ...mockIssue,
         date,

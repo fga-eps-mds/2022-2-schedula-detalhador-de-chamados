@@ -17,8 +17,7 @@ export class IssuesService {
   ) {}
 
   async createIssue(createIssuedto: CreateIssuedto): Promise<Issue> {
-    const date = new Date();
-    const issue = this.IssueRepo.create({ ...createIssuedto, date });
+    const issue = this.IssueRepo.create({ ...createIssuedto });
     try {
       return await this.IssueRepo.save(issue);
     } catch (error) {
@@ -28,7 +27,8 @@ export class IssuesService {
 
   async findIssues(): Promise<Issue[]> {
     const issues = await this.IssueRepo.find({});
-    if (!issues) throw new NotFoundException('Não existem chamado cadastrados');
+    if (!issues)
+      throw new NotFoundException('Não existem chamados cadastrados');
     return issues;
   }
 
@@ -76,7 +76,7 @@ export class IssuesService {
   async deleteIssue(issueId: string) {
     const result = await this.IssueRepo.delete({ id: issueId });
     if (result.affected === 0) {
-      throw new NotFoundException('Nao foi encontrado um chamado com este id');
+      throw new NotFoundException('Não foi encontrado um chamado com este id');
     }
   }
 }

@@ -1,7 +1,7 @@
 import { IssueModule } from './issue/issue.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
-import { Module } from '@nestjs/common';
+import { Module, CacheModule } from '@nestjs/common';
 import configuration from './configs/configuration';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from './schedules/schedules.module';
@@ -11,7 +11,7 @@ const configService = configuration();
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [configuration] }),
+    ConfigModule.forRoot({ load: [configuration], isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: configService.database.host,
@@ -19,6 +19,7 @@ const configService = configuration();
       username: configService.database.user,
       password: configService.database.pass,
       database: configService.database.db,
+      autoLoadEntities: true,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: true,
       ...(process.env.ENVIRONMENT === 'PRODUCTION' && {
@@ -29,6 +30,7 @@ const configService = configuration();
         },
       }),
     }),
+    CacheModule.register({ isGlobal: true }),
     ScheduleModule,
     IssueModule,
   ],

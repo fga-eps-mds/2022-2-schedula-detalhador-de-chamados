@@ -3,6 +3,7 @@ import { IssuesController } from './issue.controller';
 import { IssuesService } from './issue.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateIssuedto } from './dto/createIssuedto';
+import { CacheModule } from '@nestjs/common';
 
 describe('IssuesController', () => {
   let controller: IssuesController;
@@ -63,6 +64,7 @@ describe('IssuesController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [IssuesController],
       providers: [IssuesService],
+      imports: [CacheModule.register()],
     })
       .overrideProvider(IssuesService)
       .useValue(mockIssuesService)
