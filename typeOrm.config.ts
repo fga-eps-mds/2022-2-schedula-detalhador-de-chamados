@@ -1,15 +1,16 @@
-import { DataSourceOptions } from 'typeorm';
-import configuration from 'src/configs/configuration';
+import { DataSource } from 'typeorm';
 
-const configService = configuration();
-
-export const config: DataSourceOptions = {
+export const connectionSource = new DataSource({
   type: 'postgres',
-  host: configService.database.host,
-  port: configService.database.port,
-  username: configService.database.user,
-  password: configService.database.pass,
-  database: configService.database.db,
-  synchronize: true, // Obs: use synchronize: true somente em desenvolvimento.
-  entities: ['./src/**/*.entity.ts'],
-};
+  host: 'localhost',
+  port: 5105,
+  username: 'postgres',
+  password: 'postgres',
+  database: 'schedula_core',
+  synchronize: false,
+  migrationsRun: true,
+  entities: ['src/**/*.entity.ts'],
+  migrations: ['./migrations/*.ts'],
+  subscribers: ['subscriber/*.ts'],
+  migrationsTableName: 'TypeOrmMigrations',
+});
