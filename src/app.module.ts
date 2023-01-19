@@ -1,3 +1,4 @@
+import { ProblemCategoryModule } from './problem-category/problem-category.module';
 import { IssueModule } from './issue/issue.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -33,6 +34,7 @@ const configService = configuration();
     CacheModule.register({ isGlobal: true }),
     ScheduleModule,
     IssueModule,
+    ProblemCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
