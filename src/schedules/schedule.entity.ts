@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 
 import { Alert } from './alert.entity';
-import { ScheduleStatus } from './schedule-status.enum';
 
 @Entity()
 export class Schedule extends BaseEntity {
@@ -21,7 +20,13 @@ export class Schedule extends BaseEntity {
   @Column({ nullable: true })
   dateTime: Date;
 
-  @OneToOne(() => Issue)
+  @Column({ nullable: true })
+  description: string;
+
+  @Column()
+  status: string;
+
+  @OneToOne(() => Issue, (issue: Issue) => issue.schedule)
   @JoinColumn()
   issue: Issue;
 
@@ -30,10 +35,4 @@ export class Schedule extends BaseEntity {
   })
   @JoinColumn()
   alerts: Relation<Alert[]>;
-
-  @Column({ nullable: true })
-  description: string;
-
-  @Column()
-  status: string;
 }

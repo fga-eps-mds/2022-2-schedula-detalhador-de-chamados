@@ -19,17 +19,17 @@ export class CreateIssuedto {
   @IsNotEmpty({
     message: 'Posto de Trabalho não fornecido',
   })
-  workstation: string;
+  workstation_id: string;
 
   @IsNotEmpty({
     message: 'categoria do Problema não fornecido',
   })
-  problem_category: string;
+  problem_category_id: string;
 
   @IsNotEmpty({
     message: 'Tipo do Problema não fornecido',
   })
-  problem_type: string;
+  problem_types_ids: string[];
 
   @IsNotEmpty({
     message: 'Data não fornecido',

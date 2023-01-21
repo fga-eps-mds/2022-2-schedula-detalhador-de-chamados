@@ -7,6 +7,7 @@ import configuration from './configs/configuration';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from './schedules/schedules.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProblemTypesModule } from './problem-types/problem-types.module';
 
 const configService = configuration();
 
@@ -32,9 +33,10 @@ const configService = configuration();
       }),
     }),
     CacheModule.register({ isGlobal: true }),
-    ScheduleModule,
-    IssueModule,
     ProblemCategoryModule,
+    ProblemTypesModule,
+    IssueModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

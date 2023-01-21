@@ -4,6 +4,5 @@ export class CreateProblemCategoryDto {
   name: string;
   @IsString({ message: 'Informe uma descrição válida' })
   description: string;
-  @IsString({ message: 'Informe um tipo válido' })
-  problem_types: string;
+  problem_types_ids: string[];
 }

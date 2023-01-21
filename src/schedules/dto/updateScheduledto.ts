@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class UpdateScheduleDto {
   alerts: Date[];
@@ -6,10 +6,10 @@ export class UpdateScheduleDto {
   @IsString({ message: 'Informe uma descrição valida' })
   description: string;
 
-  @IsNotEmpty({
-    message: 'Status não fornecido',
-  })
-  status: string;
+  status_e: string;
 
-  dateTime: string;
+  dateTime: Date;
+
+  @IsString()
+  issue_id: string;
 }
