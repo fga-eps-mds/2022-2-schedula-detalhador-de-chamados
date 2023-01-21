@@ -14,7 +14,7 @@ export class CreateIssuedto {
   @IsNotEmpty({
     message: 'Cidade não fornecido',
   })
-  city: string;
+  city_id: string;
 
   @IsNotEmpty({
     message: 'Posto de Trabalho não fornecido',

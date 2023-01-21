@@ -26,7 +26,7 @@ export class Issue extends BaseEntity {
   phone: string;
 
   @Column()
-  city: string;
+  city_id: string;
 
   @Column()
   workstation_id: string;

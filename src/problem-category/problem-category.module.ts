@@ -3,9 +3,7 @@ import { ProblemCategoryService } from './problem-category.service';
 import { ProblemCategoryController } from './problem-category.controller';
 import { ProblemCategory } from './entities/problem-category.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProblemTypesModule } from 'src/problem-types/problem-types.module';
-import { ProblemType } from 'src/problem-types/entities/problem-type.entity';
-import { ProblemTypesService } from 'src/problem-types/problem-types.service';
+import { ProblemTypesModule } from '../problem-types/problem-types.module';
 
 @Module({
   imports: [

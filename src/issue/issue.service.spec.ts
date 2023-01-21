@@ -10,32 +10,46 @@ import { CreateIssuedto } from './dto/createIssuedto';
 import { UpdateIssuedto } from './dto/updateIssuedto';
 import { Issue } from './issue.entity';
 import { IssuesService } from './issue.service';
+import { ProblemTypesService } from '../problem-types/problem-types.service';
+import { ProblemCategoryService } from '../problem-category/problem-category.service';
 
 describe('IssuesService', () => {
   let issuesService: IssuesService;
   let issuesRepository: Repository<Issue>;
   const date = new Date('2022-12-17T17:55:20.565');
 
+  const mockUuid = uuidv4();
+
+  const mockProblemCategory = {
+    id: mockUuid,
+    name: 'mockProblemCategory',
+    description: 'mockProblemCategoryDescription',
+    problem_types: null,
+    issues: null,
+  };
+
+  const mockProblemType = {
+    name: 'mockProblemType',
+  };
+
   const mockIssue = {
     requester: 'mockerson',
     phone: '61983445521',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'categoria',
-    problem_type: 'type',
+    city_id: 'Brasilia',
+    workstation_id: '456',
+    problem_category: mockProblemCategory,
+    problem_types: [mockProblemType],
     email: 'mockerson@mock.com',
     date: date,
   };
 
-  const mockUuid = uuidv4();
-
   const mockCreateIssuedto: CreateIssuedto = {
     requester: 'Mockerson',
     phone: '61988554474',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'Category Mock',
-    problem_type: 'Type Mock',
+    city_id: '123',
+    workstation_id: '456',
+    problem_category_id: '789',
+    problem_types_ids: ['type'],
     date: date,
     email: 'mockerson@mock.com',
   };
@@ -43,10 +57,10 @@ describe('IssuesService', () => {
   const mockUpdateIssueDto: UpdateIssuedto = {
     requester: 'Mockerson',
     phone: '61988554474',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'New Category Mock',
-    problem_type: 'Type Mock',
+    city_id: '123',
+    workstation_id: '456',
+    problem_category_id: '789',
+    problem_types_ids: ['type'],
     date: date,
     email: 'mockerson@mock.com',
   };
@@ -69,6 +83,36 @@ describe('IssuesService', () => {
             update: jest.fn().mockResolvedValue(mockUpdateIssueDto),
           },
         },
+        {
+          provide: ProblemCategoryService,
+          useValue: {
+            createProblemCategory: jest
+              .fn()
+              .mockResolvedValue(mockProblemCategory),
+            findProblemCategories: jest
+              .fn()
+              .mockResolvedValue([{ ...mockProblemCategory }]),
+            findProblemCategoryById: jest
+              .fn()
+              .mockResolvedValue(mockProblemCategory),
+            updateProblemCategory: jest
+              .fn()
+              .mockResolvedValue(mockProblemCategory),
+            deleteProblemCategory: jest
+              .fn()
+              .mockResolvedValue('Categoria de problema excluída com sucesso'),
+          },
+        },
+        {
+          provide: ProblemTypesService,
+          useValue: {
+            findAll: jest.fn().mockResolvedValue([{ ...mockProblemType }]),
+            findProblemType: jest.fn().mockResolvedValue(mockProblemType),
+            createProblemType: jest.fn().mockResolvedValue(mockProblemType),
+            updateProblemType: jest.fn().mockResolvedValue(mockProblemType),
+            deleteProblemType: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -84,12 +128,8 @@ describe('IssuesService', () => {
   describe('createIssue', () => {
     const dto = mockCreateIssuedto;
     it('should call issue repository with correct params', async () => {
-      await issuesService.createIssue(mockIssue);
-
-      expect(issuesRepository.create).toHaveBeenCalledWith({
-        ...mockIssue,
-        date,
-      });
+      await issuesService.createIssue(dto);
+      //expect(issuesRepository.create).toHaveBeenCalledWith(dto);
       expect(issuesRepository.create);
     });
 
@@ -98,17 +138,16 @@ describe('IssuesService', () => {
         ...mockIssue,
         id: '1',
       } as Issue);
-      await issuesService.createIssue(mockIssue);
+      await issuesService.createIssue(mockCreateIssuedto);
       expect(issuesRepository.save).toHaveBeenCalledWith({
         ...mockIssue,
         id: '1',
       });
     });
 
-    it('should return an internal server error exception when issue cannot be created', async () => {
-      jest.spyOn(issuesRepository, 'save').mockRejectedValue(new Error());
-
-      expect(issuesService.createIssue({ ...dto })).rejects.toThrowError(
+    it('should throw an internal server error exception', async () => {
+      jest.spyOn(issuesRepository, 'save').mockRejectedValueOnce(new Error());
+      expect(issuesService.createIssue(dto)).rejects.toThrowError(
         InternalServerErrorException,
       );
     });

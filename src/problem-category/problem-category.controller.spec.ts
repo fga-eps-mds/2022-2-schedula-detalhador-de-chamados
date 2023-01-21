@@ -13,12 +13,12 @@ describe('ProblemCategoryController', () => {
 
   const mockCreateProblemCategoryDto: CreateProblemCategoryDto = {
     name: 'mockName',
-    problem_types: 'mockProblemType1, mockProblemType2',
+    problem_types_ids: ['mockProblemType1', 'mockProblemType2'],
     description: 'mockDescription',
   };
   const mockUpdateProblemCategoryDto: UpdateProblemCategoryDto = {
     name: 'UpdateMockName',
-    problem_types: 'UpdateMockProblemType1, updateMockProblemType2',
+    problem_types_ids: ['mockProblemType1', 'mockProblemType2'],
     description: 'mockDescription',
   };
   const mockProblemCategoryEntityList = [{ ...mockCreateProblemCategoryDto }];

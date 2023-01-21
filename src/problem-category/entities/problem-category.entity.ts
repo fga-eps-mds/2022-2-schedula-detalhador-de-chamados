@@ -26,7 +26,7 @@ export class ProblemCategory extends BaseEntity {
   @OneToMany(
     () => ProblemType,
     (problem_type: ProblemType) => problem_type.problem_category,
-    { nullable: true },
+    { nullable: true, onDelete: 'CASCADE' },
   )
   @JoinColumn()
   problem_types: Relation<ProblemType[]>;

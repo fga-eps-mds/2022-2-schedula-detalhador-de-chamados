@@ -10,8 +10,8 @@ import { Repository } from 'typeorm';
 import { Issue } from './issue.entity';
 import { CreateIssuedto } from './dto/createIssuedto';
 import { UpdateIssuedto } from './dto/updateIssuedto';
-import { ProblemType } from 'src/problem-types/entities/problem-type.entity';
-import { ProblemTypesService } from 'src/problem-types/problem-types.service';
+import { ProblemType } from '../problem-types/entities/problem-type.entity';
+import { ProblemTypesService } from '../problem-types/problem-types.service';
 import { ProblemCategory } from '../problem-category/entities/problem-category.entity';
 import { ProblemCategoryService } from '../problem-category/problem-category.service';
 
@@ -52,7 +52,6 @@ export class IssuesService {
       problem_category,
       problem_types,
     });
-    console.log(issue);
     try {
       return await this.IssueRepo.save(issue);
     } catch (error) {

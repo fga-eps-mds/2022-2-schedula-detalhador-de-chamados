@@ -20,25 +20,21 @@ describe('SchedulesService', () => {
   const mockUuid = uuid();
 
   const mockCreateScheduleDto: CreateScheduleDto = {
-    requester: 'mockerson',
-    phone: '62911111111',
-    city: 'Trindade',
-    workstation: 'GO',
-    problem_category: 'category',
-    problem_type: 'type',
-    attendant_email: 'attendant@mail.com',
+    issue_id: '123',
     alerts: [
       new Date('2022-12-17T17:55:20.565'),
       new Date('2022-12-18T18:55:20.565'),
     ],
     description: 'Uma descrição valida',
-    status: 'PROGRESS',
+    status_e: 'PROGRESS',
+    dateTime: new Date('2022-12-17T17:55:20.565'),
   };
   const mockUpdateScheduleDto: UpdateScheduleDto = {
+    issue_id: '123',
     description: 'Outra descrição valida',
-    status: 'CLOSED',
+    status_e: 'CLOSED',
     alerts: [new Date('2022-12-19T19:55:20.565')],
-    dateTime: '2022-12-18T18:55:20.565',
+    dateTime: new Date('2022-12-17T17:55:20.565'),
   };
 
   const schedulesEntityList = [
@@ -48,10 +44,10 @@ describe('SchedulesService', () => {
   const mockCreateIssuedto: CreateIssuedto = {
     requester: 'Mockerson',
     phone: '61988554474',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'Category Mock',
-    problem_type: 'Type Mock',
+    city_id: 'Brasilia',
+    workstation_id: 'DF',
+    problem_category_id: 'Category Mock',
+    problem_types_ids: ['Type Mock'],
     date: new Date(),
     email: 'mockerson@mock.com',
   };
@@ -77,7 +73,7 @@ describe('SchedulesService', () => {
         id,
       };
     }),
-    deleteIssue: jest.fn((id) => {
+    deleteIssue: jest.fn(() => {
       return {
         message: 'Chamado removido com sucesso',
       };
@@ -100,7 +96,7 @@ describe('SchedulesService', () => {
             }),
             find: jest.fn().mockResolvedValue(schedulesEntityList),
             findOne: jest.fn().mockResolvedValue(schedulesEntityList[0]),
-            delete: jest.fn((id) => {
+            delete: jest.fn(() => {
               return { affected: 1 };
             }),
             findOneBy: jest.fn().mockResolvedValue(mockUpdateScheduleDto),
