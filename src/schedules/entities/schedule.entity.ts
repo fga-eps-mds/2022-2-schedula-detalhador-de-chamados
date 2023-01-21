@@ -1,4 +1,4 @@
-import { Issue } from '../issue/issue.entity';
+import { Issue } from '../../issue/entities/issue.entity';
 import {
   BaseEntity,
   Entity,

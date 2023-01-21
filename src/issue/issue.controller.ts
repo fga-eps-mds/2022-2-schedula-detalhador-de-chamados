@@ -9,7 +9,7 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { Issue } from './issue.entity';
+import { Issue } from './entities/issue.entity';
 import { IssuesService } from './issue.service';
 import { CreateIssuedto } from './dto/createIssuedto';
 

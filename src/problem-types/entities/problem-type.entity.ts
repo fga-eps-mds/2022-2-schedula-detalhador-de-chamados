@@ -8,7 +8,7 @@ import {
   Relation,
 } from 'typeorm';
 import { ProblemCategory } from '../../problem-category/entities/problem-category.entity';
-import { Issue } from '../../issue/issue.entity';
+import { Issue } from '../../issue/entities/issue.entity';
 
 @Entity()
 export class ProblemType extends BaseEntity {

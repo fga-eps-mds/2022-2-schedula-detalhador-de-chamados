@@ -72,45 +72,37 @@ export class ProblemCategoryService {
       where: { id },
       relations: ['problem_types'],
     });
-    if (!problemCategory)
+    if (!problemCategory) {
       throw new NotFoundException('Categoria de problema não encontrada');
-
+    }
     return problemCategory;
   }
 
   async updateProblemCategory(
     id: string,
-    updateProblemCategoryDto: UpdateProblemCategoryDto,
+    dto: UpdateProblemCategoryDto,
   ): Promise<ProblemCategory> {
-    const problemCategory = await this.problemCategoryRepository.findOneBy({
-      id,
-    });
-    if (!problemCategory)
-      throw new NotFoundException('Categoria de problema não encontrada');
-    const { name, description, problem_types_ids } = updateProblemCategoryDto;
-    const problem_types: ProblemType[] = problem_types_ids
-      ? await this.updateProblemTypes(problem_types_ids)
-      : problemCategory.problem_types;
-    problemCategory.name = name ? name : problemCategory.name;
-    problemCategory.description = description
-      ? description
-      : problemCategory.description;
-    problemCategory.problem_types = problem_types;
     try {
-      return await this.problemCategoryRepository.save(problemCategory);
+      const problemCategory = await this.problemCategoryRepository.findOneBy({
+        id,
+      });
+      const problem_types: ProblemType[] = dto.problem_types_ids
+        ? await this.updateProblemTypes(dto.problem_types_ids)
+        : problemCategory.problem_types;
+
+      await this.problemCategoryRepository.save({
+        id,
+        ...dto,
+        problem_types,
+      });
+      return this.problemCategoryRepository.findOneBy({ id });
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Erro ao salvar os dados no banco de dados',
-      );
+      throw new InternalServerErrorException(error.message);
     }
   }
 
   async deleteProblemCategory(id: string) {
     const result = await this.problemCategoryRepository.delete({ id: id });
-    if (!result)
-      throw new NotFoundException(
-        'Não foi encontrada uma categoria de problema com o ID informado',
-      );
     if (result.affected === 0) {
       throw new NotFoundException(
         'Não foi encontrada uma categoria de problema com o ID informado',

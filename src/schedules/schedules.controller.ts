@@ -10,7 +10,7 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { Schedule } from './schedule.entity';
+import { Schedule } from './entities/schedule.entity';
 import { SchedulesService } from './schedules.service';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { UpdateScheduleDto } from './dto/updateScheduledto';

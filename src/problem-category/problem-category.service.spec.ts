@@ -116,7 +116,7 @@ describe('ProblemCategoryService', () => {
     });
 
     it('should throw a not found exception', async () => {
-      jest.spyOn(repo, 'findOneBy').mockResolvedValueOnce(null);
+      jest.spyOn(repo, 'findOne').mockResolvedValueOnce(null);
       expect(service.findProblemCategoryById(mockUuid)).rejects.toThrowError(
         NotFoundException,
       );
@@ -124,6 +124,15 @@ describe('ProblemCategoryService', () => {
   });
 
   describe('updateProblemCategory', () => {
+    it('should update a problem category successfully', async () => {
+      const result = await service.updateProblemCategory(
+        mockUuid,
+        mockUpdateProblemCategoryDto,
+      );
+
+      expect(result).toEqual(mockProblemCategoryEntityList[0]);
+    });
+
     it('should throw an internal server error', async () => {
       jest.spyOn(repo, 'save').mockRejectedValueOnce(new Error());
       expect(

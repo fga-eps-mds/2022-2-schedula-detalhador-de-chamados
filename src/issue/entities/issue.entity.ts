@@ -10,9 +10,9 @@ import {
   OneToOne,
   JoinTable,
 } from 'typeorm';
-import { ProblemCategory } from '../problem-category/entities/problem-category.entity';
-import { ProblemType } from '../problem-types/entities/problem-type.entity';
-import { Schedule } from '../schedules/schedule.entity';
+import { ProblemCategory } from '../../problem-category/entities/problem-category.entity';
+import { ProblemType } from '../../problem-types/entities/problem-type.entity';
+import { Schedule } from '../../schedules/entities/schedule.entity';
 
 @Entity()
 export class Issue extends BaseEntity {

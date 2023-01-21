@@ -1,6 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Issue } from './issue.entity';
+import { Issue } from './entities/issue.entity';
 import { IssuesController } from './issue.controller';
 import { IssuesService } from './issue.service';
 import { ProblemCategoryModule } from '../problem-category/problem-category.module';

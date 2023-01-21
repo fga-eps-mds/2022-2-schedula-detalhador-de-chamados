@@ -8,7 +8,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateIssuedto } from './dto/createIssuedto';
 import { UpdateIssuedto } from './dto/updateIssuedto';
-import { Issue } from './issue.entity';
+import { Issue } from './entities/issue.entity';
 import { IssuesService } from './issue.service';
 import { ProblemTypesService } from '../problem-types/problem-types.service';
 import { ProblemCategoryService } from '../problem-category/problem-category.service';

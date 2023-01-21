@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Issue } from './issue.entity';
+import { Issue } from './entities/issue.entity';
 import { CreateIssuedto } from './dto/createIssuedto';
 import { UpdateIssuedto } from './dto/updateIssuedto';
 import { ProblemType } from '../problem-types/entities/problem-type.entity';

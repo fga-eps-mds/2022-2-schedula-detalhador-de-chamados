@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Schedule } from './schedule.entity';
+import { Schedule } from './entities/schedule.entity';
 import { SchedulesController } from './schedules.controller';
 import { SchedulesService } from './schedules.service';
-import { Alert } from './alert.entity';
+import { Alert } from './entities/alert.entity';
 import { IssuesService } from '../issue/issue.service';
 import { IssueModule } from 'src/issue/issue.module';
 import { ProblemCategoryModule } from 'src/problem-category/problem-category.module';

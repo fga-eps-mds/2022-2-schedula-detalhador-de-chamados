@@ -7,7 +7,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { SchedulesService } from './schedules.service';
-import { Schedule } from './schedule.entity';
+import { Schedule } from './entities/schedule.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
 import { IssuesService } from '../issue/issue.service';

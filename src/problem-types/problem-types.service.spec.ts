@@ -7,7 +7,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProblemCategoryService } from '../problem-category/problem-category.service';
 import { IssuesService } from '../issue/issue.service';
 import { InternalServerErrorException } from '@nestjs/common';
-import { Issue } from 'src/issue/issue.entity';
 
 describe('ProblemTypesService', () => {
   let service: ProblemTypesService;
@@ -172,8 +171,16 @@ describe('ProblemTypesService', () => {
   describe('deleteProblemType', () => {
     const id = mockUuid;
     it('should delete a problem type successfully', async () => {
-      await service.deleteProblemType(id);
+      const result = await service.deleteProblemType(id);
       expect(repo.delete).toHaveBeenCalledTimes(1);
+      expect(result).toMatch('Deletado com sucesso');
+    });
+    it('should throw a internal server error', async () => {
+      jest.spyOn(repo, 'delete').mockRejectedValueOnce(new Error());
+
+      expect(service.deleteProblemType(id)).rejects.toThrowError(
+        InternalServerErrorException,
+      );
     });
   });
 

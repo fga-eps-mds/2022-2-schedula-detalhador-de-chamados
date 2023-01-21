@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Schedule } from './schedule.entity';
-import { Alert } from './alert.entity';
+import { Schedule } from './entities/schedule.entity';
+import { Alert } from './entities/alert.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { ScheduleStatus } from './schedule-status.enum';
 import { IssuesService } from '../issue/issue.service';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
-import { Issue } from 'src/issue/issue.entity';
+import { Issue } from 'src/issue/entities/issue.entity';
 
 @Injectable()
 export class SchedulesService {
