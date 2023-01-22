@@ -39,7 +39,7 @@ export class SchedulesService {
     const alerts: Alert[] = dto.alerts ? this.createAlerts(dto.alerts) : [];
     const issue: Issue = await this.issuesService.findIssueById(dto.issue_id);
     const status: ScheduleStatus = ScheduleStatus[dto.status_e];
-    const schedule = await this.scheduleRepo.create({
+    const schedule = this.scheduleRepo.create({
       ...dto,
       alerts,
       issue,
