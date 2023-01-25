@@ -3,7 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Unique,
   OneToMany,
   Relation,
   JoinColumn,
@@ -13,7 +12,6 @@ import {
 import { ProblemType } from '../../problem-types/entities/problem-type.entity';
 import { Issue } from '../../issue/entities/issue.entity';
 @Entity()
-@Unique(['name'])
 export class ProblemCategory extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
