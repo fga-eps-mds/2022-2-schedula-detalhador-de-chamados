@@ -7,6 +7,5 @@ export class UpdateProblemTypeDto {
   @IsString()
   problem_category_id: string;
 
-  @IsString()
   issues_ids: string[];
 }

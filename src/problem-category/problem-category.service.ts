@@ -102,11 +102,15 @@ export class ProblemCategoryService {
   }
 
   async deleteProblemCategory(id: string) {
-    const result = await this.problemCategoryRepository.delete({ id: id });
-    if (result.affected === 0) {
+    const category = await this.problemCategoryRepository.findOne({
+      where: { id },
+      relations: ['problem_types'],
+    });
+    if (!category) {
       throw new NotFoundException(
         'Não foi encontrada uma categoria de problema com o ID informado',
       );
     }
+    await this.problemCategoryRepository.softRemove(category);
   }
 }

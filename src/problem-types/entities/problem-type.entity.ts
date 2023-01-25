@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToMany,
   ManyToOne,
@@ -31,4 +32,7 @@ export class ProblemType extends BaseEntity {
     nullable: true,
   })
   issues: Relation<Issue[]>;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

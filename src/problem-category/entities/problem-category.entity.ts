@@ -7,6 +7,7 @@ import {
   OneToMany,
   Relation,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 import { ProblemType } from '../../problem-types/entities/problem-type.entity';
@@ -26,7 +27,7 @@ export class ProblemCategory extends BaseEntity {
   @OneToMany(
     () => ProblemType,
     (problem_type: ProblemType) => problem_type.problem_category,
-    { nullable: true, onDelete: 'CASCADE' },
+    { nullable: true, onDelete: 'CASCADE', cascade: true },
   )
   @JoinColumn()
   problem_types: Relation<ProblemType[]>;
@@ -35,4 +36,7 @@ export class ProblemCategory extends BaseEntity {
     nullable: true,
   })
   issues: Relation<Issue[]>;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

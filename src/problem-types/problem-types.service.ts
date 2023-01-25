@@ -104,7 +104,7 @@ export class ProblemTypesService {
 
   async deleteProblemType(id: string): Promise<string> {
     try {
-      await this.problem_typeRepo.delete({ id });
+      await this.problem_typeRepo.softDelete({ id });
       return 'Deletado com sucesso';
     } catch (err) {
       throw new InternalServerErrorException(err.message);
