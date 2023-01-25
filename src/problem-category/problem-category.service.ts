@@ -52,7 +52,7 @@ export class ProblemCategoryService {
       return await this.problemCategoryRepository.save(problemCategory);
     } catch (error) {
       throw new InternalServerErrorException(
-        'Erro ao salvar o usuário no banco de dados',
+        'Erro ao salvar a categoria no banco de dados',
       );
     }
   }
