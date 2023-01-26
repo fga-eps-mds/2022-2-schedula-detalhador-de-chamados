@@ -58,13 +58,13 @@ export class ProblemCategoryService {
   }
 
   async findProblemCategories(): Promise<ProblemCategory[]> {
-    const problemCategories = this.problemCategoryRepository.find({
-      relations: ['problem_types'],
-    });
-    if ((await problemCategories).length == 0)
-      throw new NotFoundException('Categoria de problema não encontrada');
-
-    return problemCategories;
+    try {
+      return this.problemCategoryRepository.find({
+        relations: ['problem_types'],
+      });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   async findProblemCategoryById(id: string): Promise<ProblemCategory> {

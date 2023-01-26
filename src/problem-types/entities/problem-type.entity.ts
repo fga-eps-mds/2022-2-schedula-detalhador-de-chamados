@@ -24,6 +24,7 @@ export class ProblemType extends BaseEntity {
     (problem_category: ProblemCategory) => problem_category.problem_types,
     {
       onDelete: 'CASCADE',
+      nullable: true,
     },
   )
   problem_category: Relation<ProblemCategory>;
