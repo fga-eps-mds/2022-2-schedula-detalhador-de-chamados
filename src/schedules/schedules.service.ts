@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Schedule } from './schedule.entity';
-import { Alert } from './alert.entity';
+import { Schedule } from './entities/schedule.entity';
+import { Alert } from './entities/alert.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { ScheduleStatus } from './schedule-status.enum';
 import { IssuesService } from '../issue/issue.service';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
+import { Issue } from 'src/issue/entities/issue.entity';
 
 @Injectable()
 export class SchedulesService {
@@ -22,12 +23,27 @@ export class SchedulesService {
     private issuesService: IssuesService,
   ) {}
 
-  async createSchedule(
-    createScheduledto: CreateScheduleDto,
-  ): Promise<Schedule> {
+  createAlerts(dates: Date[]): Alert[] {
+    const alerts: Alert[] = [];
+
+    dates.forEach((date) => {
+      const alert = this.alertRepo.create();
+      alert.date = date;
+      alerts.push(alert);
+    });
+
+    return alerts;
+  }
+
+  async createSchedule(dto: CreateScheduleDto): Promise<Schedule> {
+    const alerts: Alert[] = dto.alerts ? this.createAlerts(dto.alerts) : [];
+    const issue: Issue = await this.issuesService.findIssueById(dto.issue_id);
+    const status: ScheduleStatus = ScheduleStatus[dto.status_e];
     const schedule = this.scheduleRepo.create({
-      ...createScheduledto,
-      alerts: this.createAlerts(createScheduledto.alerts),
+      ...dto,
+      alerts,
+      issue,
+      status,
     });
     try {
       await this.scheduleRepo.save(schedule);
@@ -49,29 +65,31 @@ export class SchedulesService {
   async findScheduleById(scheduleId: string): Promise<Schedule> {
     const schedule = await this.scheduleRepo.findOne({
       where: { id: scheduleId },
-      relations: ['alerts'],
+      relations: ['alerts', 'issue'],
     });
     if (!schedule) throw new NotFoundException('Agendamento não encontrado');
     return schedule;
   }
 
   async updateSchedule(
-    updateScheduledto: UpdateScheduleDto,
+    dto: UpdateScheduleDto,
     scheduleId: string,
   ): Promise<Schedule> {
     const schedule = await this.scheduleRepo.findOneBy({
       id: scheduleId,
     });
-    const { description, alerts, status, dateTime } = updateScheduledto;
-
     try {
-      schedule.alerts = alerts ? this.createAlerts(alerts) : schedule.alerts;
-      schedule.description = description;
-      schedule.dateTime = dateTime ? new Date(dateTime) : schedule.dateTime;
-      schedule.status = ScheduleStatus[status];
-
-      await this.scheduleRepo.save(schedule);
-      return schedule;
+      const alerts: Alert[] = dto.alerts
+        ? this.createAlerts(dto.alerts)
+        : schedule.alerts;
+      const issue: Issue = dto.issue_id
+        ? await this.issuesService.findIssueById(dto.issue_id)
+        : schedule.issue;
+      const status: ScheduleStatus = ScheduleStatus[dto.status_e];
+      await this.scheduleRepo.save({ id: scheduleId, alerts, issue, status });
+      return await this.scheduleRepo.findOneBy({
+        id: scheduleId,
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -84,17 +102,5 @@ export class SchedulesService {
         'Nao foi encontrado um agendamento com este id',
       );
     }
-  }
-
-  createAlerts(dates: Date[]): Alert[] {
-    const alerts: Alert[] = [];
-
-    dates.forEach((date) => {
-      const alert = this.alertRepo.create();
-      alert.date = date;
-      alerts.push(alert);
-    });
-
-    return alerts;
   }
 }

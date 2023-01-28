@@ -11,7 +11,6 @@ import { ProblemCategoryService } from './problem-category.service';
 import { CreateProblemCategoryDto } from './dto/create-problem-category.dto';
 import { UpdateProblemCategoryDto } from './dto/update-problem-category.dto';
 import { ProblemCategory } from './entities/problem-category.entity';
-import { ReturnProblemCategoryDto } from './dto/return-problem-category.dto';
 
 @Controller('problem-category')
 export class ProblemCategoryController {
@@ -37,15 +36,8 @@ export class ProblemCategoryController {
   }
 
   @Get(':id')
-  async findProblemCategory(
-    @Param('id') id: string,
-  ): Promise<ReturnProblemCategoryDto> {
-    const problemCategory =
-      await this.problemCategoryService.findProblemCategoryById(id);
-    return {
-      problemCategory,
-      message: 'Categoria de problema encontrada',
-    };
+  async findProblemCategory(@Param('id') id: string): Promise<ProblemCategory> {
+    return await this.problemCategoryService.findProblemCategoryById(id);
   }
 
   @Put(':id')
@@ -53,7 +45,7 @@ export class ProblemCategoryController {
     @Param('id') id: string,
     @Body() updateProblemCategoryDto: UpdateProblemCategoryDto,
   ) {
-    return this.problemCategoryService.updateProblemCategory(
+    return await this.problemCategoryService.updateProblemCategory(
       id,
       updateProblemCategoryDto,
     );

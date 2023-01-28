@@ -13,10 +13,10 @@ describe('IssuesController', () => {
   const mockCreateIssuedto: CreateIssuedto = {
     requester: 'Mockerson',
     phone: '61988554474',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'Category Mock',
-    problem_type: 'Type Mock',
+    city_id: '123',
+    workstation_id: '123',
+    problem_category_id: 'Category Mock',
+    problem_types_ids: ['Type Mock'],
     date: new Date(),
     email: 'mockerson@mock.com',
   };
@@ -24,10 +24,10 @@ describe('IssuesController', () => {
   const mockUpdateissueDto: CreateIssuedto = {
     requester: 'Mockerson',
     phone: '61988554474',
-    city: 'Brasilia',
-    workstation: 'DF',
-    problem_category: 'New Category Mock',
-    problem_type: 'Type Mock',
+    city_id: '123',
+    workstation_id: '123',
+    problem_category_id: 'Category Mock',
+    problem_types_ids: ['Type Mock'],
     date: new Date(),
     email: 'mockerson@mock.com',
   };
