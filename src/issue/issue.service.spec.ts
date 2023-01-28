@@ -129,7 +129,6 @@ describe('IssuesService', () => {
     const dto = mockCreateIssuedto;
     it('should call issue repository with correct params', async () => {
       await issuesService.createIssue(dto);
-      //expect(issuesRepository.create).toHaveBeenCalledWith(dto);
       expect(issuesRepository.create);
     });
 

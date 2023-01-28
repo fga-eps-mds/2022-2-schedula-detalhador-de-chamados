@@ -36,5 +36,5 @@ export class ProblemCategory extends BaseEntity {
   issues: Relation<Issue[]>;
 
   @DeleteDateColumn()
-  deletedAt?: Date;
+  deleted_at?: Date;
 }
