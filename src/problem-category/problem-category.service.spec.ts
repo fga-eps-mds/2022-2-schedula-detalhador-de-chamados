@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProblemCategoryService } from './problem-category.service';
 import { ProblemCategory } from './entities/problem-category.entity';
 import { v4 as uuid } from 'uuid';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProblemTypesService } from '../problem-types/problem-types.service';
 import {
@@ -41,7 +41,7 @@ describe('ProblemCategoryService', () => {
     find: jest.fn().mockResolvedValue(mockProblemCategoryEntityList),
     findOne: jest.fn().mockResolvedValue(mockProblemCategoryEntityList[0]),
     findOneBy: jest.fn().mockResolvedValue(mockProblemCategoryEntityList[0]),
-    delete: jest.fn(),
+    softRemove: jest.fn(),
     save: jest.fn(),
   };
 
@@ -145,9 +145,7 @@ describe('ProblemCategoryService', () => {
     it('should throw a not found exception', async () => {
       const id = mockUuid;
 
-      jest
-        .spyOn(repo, 'delete')
-        .mockResolvedValue({ affected: 0 } as DeleteResult);
+      jest.spyOn(repo, 'softRemove').mockResolvedValue(null);
 
       expect(service.deleteProblemCategory(id)).rejects.toThrowError(
         NotFoundException,

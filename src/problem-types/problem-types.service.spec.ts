@@ -73,7 +73,7 @@ describe('ProblemTypesService', () => {
     find: jest.fn().mockResolvedValue([mockProblemType]),
     findOne: jest.fn().mockResolvedValue(mockProblemType),
     findOneBy: jest.fn().mockResolvedValue(mockProblemType),
-    delete: jest.fn().mockResolvedValue('Deletado com sucesso'),
+    softDelete: jest.fn().mockResolvedValue('Deletado com sucesso'),
     save: jest.fn(),
   };
 
@@ -172,11 +172,11 @@ describe('ProblemTypesService', () => {
     const id = mockUuid;
     it('should delete a problem type successfully', async () => {
       const result = await service.deleteProblemType(id);
-      expect(repo.delete).toHaveBeenCalledTimes(1);
+      expect(repo.softDelete).toHaveBeenCalledTimes(1);
       expect(result).toMatch('Deletado com sucesso');
     });
     it('should throw a internal server error', async () => {
-      jest.spyOn(repo, 'delete').mockRejectedValueOnce(new Error());
+      jest.spyOn(repo, 'softDelete').mockRejectedValueOnce(new Error());
 
       expect(service.deleteProblemType(id)).rejects.toThrowError(
         InternalServerErrorException,
