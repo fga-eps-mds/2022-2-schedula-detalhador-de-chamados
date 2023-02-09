@@ -11,7 +11,7 @@ import { Schedule } from './entities/schedule.entity';
 import { CreateScheduleDto } from './dto/createScheduledto';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
 import { IssuesService } from '../issue/issue.service';
-import { CreateIssuedto } from 'src/issue/dto/createIssuedto';
+import { CreateIssuedto } from '../issue/dto/createIssuedto';
 
 describe('SchedulesService', () => {
   let schedulesService: SchedulesService;

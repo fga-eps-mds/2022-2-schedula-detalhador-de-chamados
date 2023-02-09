@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { CreateProblemTypeDto } from './dto/createProblem-type.dto';
 import { ProblemCategory } from '../problem-category/entities/problem-category.entity';
 import { ProblemCategoryService } from '../problem-category/problem-category.service';
-import { Issue } from 'src/issue/entities/issue.entity';
+import { Issue } from '../issue/entities/issue.entity';
 import { IssuesService } from '../issue/issue.service';
 import { UpdateProblemTypeDto } from './dto/updateProblem-type.dto';
 

@@ -11,7 +11,7 @@ import { CreateScheduleDto } from './dto/createScheduledto';
 import { ScheduleStatus } from './schedule-status.enum';
 import { IssuesService } from '../issue/issue.service';
 import { UpdateScheduleDto } from './dto/updateScheduledto';
-import { Issue } from 'src/issue/entities/issue.entity';
+import { Issue } from '../issue/entities/issue.entity';
 
 @Injectable()
 export class SchedulesService {

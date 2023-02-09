@@ -11,7 +11,7 @@ import { CreateProblemCategoryDto } from './dto/create-problem-category.dto';
 import { UpdateProblemCategoryDto } from './dto/update-problem-category.dto';
 import { ProblemCategory } from './entities/problem-category.entity';
 import { ProblemTypesService } from '../problem-types/problem-types.service';
-import { ProblemType } from 'src/problem-types/entities/problem-type.entity';
+import { ProblemType } from '../problem-types/entities/problem-type.entity';
 
 @Injectable()
 export class ProblemCategoryService {
