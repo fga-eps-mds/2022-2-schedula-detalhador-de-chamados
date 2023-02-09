@@ -8,4 +8,4 @@ RUN yarn install
 COPY . .
 
 ENTRYPOINT [ "yarn" ]
-CMD [ "start:dev" ]
+CMD [ "start:prod" ]
