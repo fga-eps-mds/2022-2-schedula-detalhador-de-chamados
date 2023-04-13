@@ -85,12 +85,8 @@ describe('ProblemCategoryController', () => {
   describe('findProblemCategory', () => {
     it('should return a problem category entity succesfully', async () => {
       const id = mockUuid;
-      const message = 'Categoria de problema encontrada';
       const result = await controller.findProblemCategory(id);
-      expect(result).toMatchObject({
-        problemCategory: mockProblemCategoryEntityList[0],
-        message: message,
-      });
+      expect(result).toEqual(mockProblemCategoryEntityList[0]);
       expect(service.findProblemCategoryById).toHaveBeenCalledTimes(1);
       expect(service.findProblemCategoryById).toHaveBeenCalledWith(id);
     });
